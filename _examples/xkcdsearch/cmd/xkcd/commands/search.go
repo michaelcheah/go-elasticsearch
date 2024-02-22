@@ -26,9 +26,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7"
 
-	"github.com/elastic/go-elasticsearch/v7/_examples/xkcdsearch"
+	"github.com/michaelcheah/go-elasticsearch/v7/_examples/xkcdsearch"
 )
 
 func init() {
@@ -76,7 +76,6 @@ var searchCmd = &cobra.Command{
 }
 
 // Search allows to get and display results matching query.
-//
 type Search struct {
 	store       *xkcdsearch.Store
 	reHighlight *regexp.Regexp

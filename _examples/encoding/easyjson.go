@@ -26,12 +26,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/v7"
-	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/fatih/color"
 	"github.com/mailru/easyjson"
+	"github.com/michaelcheah/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7/esapi"
 
-	"github.com/elastic/go-elasticsearch/v7/_examples/encoding/model"
+	"github.com/michaelcheah/go-elasticsearch/v7/_examples/encoding/model"
 )
 
 var (
@@ -160,7 +160,6 @@ func main() {
 
 // printErrorResponse decodes the response from Elasticsearch
 // and prints it formatted to STDOUT.
-//
 func printErrorResponse(res *esapi.Response) {
 	bold.Printf("[%s] ", res.Status())
 

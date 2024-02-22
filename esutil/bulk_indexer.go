@@ -31,13 +31,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/v7"
-	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"github.com/elastic/go-elasticsearch/v7/estransport"
+	"github.com/michaelcheah/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7/esapi"
+	"github.com/michaelcheah/go-elasticsearch/v7/estransport"
 )
 
 // BulkIndexer represents a parallel, asynchronous, efficient indexer for Elasticsearch.
-//
 type BulkIndexer interface {
 	// Add adds an item to the indexer. It returns an error when the item cannot be added.
 	// Use the OnSuccess and OnFailure callbacks to get the operation result for the item.
@@ -56,7 +55,6 @@ type BulkIndexer interface {
 }
 
 // BulkIndexerConfig represents configuration of the indexer.
-//
 type BulkIndexerConfig struct {
 	NumWorkers    int           // The number of workers. Defaults to runtime.NumCPU().
 	FlushBytes    int           // The flush threshold in bytes. Defaults to 5MB.
@@ -88,7 +86,6 @@ type BulkIndexerConfig struct {
 }
 
 // BulkIndexerStats represents the indexer statistics.
-//
 type BulkIndexerStats struct {
 	NumAdded    uint64
 	NumFlushed  uint64
@@ -101,7 +98,6 @@ type BulkIndexerStats struct {
 }
 
 // BulkIndexerItem represents an indexer item.
-//
 type BulkIndexerItem struct {
 	Index           string
 	Action          string
@@ -117,7 +113,6 @@ type BulkIndexerItem struct {
 }
 
 // BulkIndexerResponse represents the Elasticsearch response.
-//
 type BulkIndexerResponse struct {
 	Took      int                                  `json:"took"`
 	HasErrors bool                                 `json:"errors"`
@@ -125,7 +120,6 @@ type BulkIndexerResponse struct {
 }
 
 // BulkIndexerResponseItem represents the Elasticsearch response item.
-//
 type BulkIndexerResponseItem struct {
 	Index      string `json:"_index"`
 	DocumentID string `json:"_id"`
@@ -152,13 +146,11 @@ type BulkIndexerResponseItem struct {
 }
 
 // BulkResponseJSONDecoder defines the interface for custom JSON decoders.
-//
 type BulkResponseJSONDecoder interface {
 	UnmarshalFromReader(io.Reader, *BulkIndexerResponse) error
 }
 
 // BulkIndexerDebugLogger defines the interface for a debugging logger.
-//
 type BulkIndexerDebugLogger interface {
 	Printf(string, ...interface{})
 }
@@ -186,7 +178,6 @@ type bulkIndexerStats struct {
 }
 
 // NewBulkIndexer creates a new bulk indexer.
-//
 func NewBulkIndexer(cfg BulkIndexerConfig) (BulkIndexer, error) {
 	if cfg.Client == nil {
 		cfg.Client, _ = elasticsearch.NewDefaultClient()
@@ -222,7 +213,6 @@ func NewBulkIndexer(cfg BulkIndexerConfig) (BulkIndexer, error) {
 // Add adds an item to the indexer.
 //
 // Adding an item after a call to Close() will panic.
-//
 func (bi *bulkIndexer) Add(ctx context.Context, item BulkIndexerItem) error {
 	atomic.AddUint64(&bi.stats.numAdded, 1)
 
@@ -240,7 +230,6 @@ func (bi *bulkIndexer) Add(ctx context.Context, item BulkIndexerItem) error {
 
 // Close stops the periodic flush, closes the indexer queue channel,
 // notifies the done channel and calls flush on all writers.
-//
 func (bi *bulkIndexer) Close(ctx context.Context) error {
 	bi.ticker.Stop()
 	close(bi.queue)
@@ -273,7 +262,6 @@ func (bi *bulkIndexer) Close(ctx context.Context) error {
 }
 
 // Stats returns indexer statistics.
-//
 func (bi *bulkIndexer) Stats() BulkIndexerStats {
 	return BulkIndexerStats{
 		NumAdded:    atomic.LoadUint64(&bi.stats.numAdded),
@@ -288,7 +276,6 @@ func (bi *bulkIndexer) Stats() BulkIndexerStats {
 }
 
 // init initializes the bulk indexer.
-//
 func (bi *bulkIndexer) init() {
 	bi.queue = make(chan BulkIndexerItem, bi.config.NumWorkers)
 
@@ -334,7 +321,6 @@ func (bi *bulkIndexer) init() {
 }
 
 // worker represents an indexer worker.
-//
 type worker struct {
 	id    int
 	ch    <-chan BulkIndexerItem
@@ -346,7 +332,6 @@ type worker struct {
 }
 
 // run launches the worker in a goroutine.
-//
 func (w *worker) run() {
 	go func() {
 		ctx := context.Background()
@@ -397,7 +382,6 @@ func (w *worker) run() {
 }
 
 // writeMeta formats and writes the item metadata to the buffer; it must be called under a lock.
-//
 func (w *worker) writeMeta(item BulkIndexerItem) error {
 	w.buf.WriteRune('{')
 	w.aux = strconv.AppendQuote(w.aux, item.Action)
@@ -460,7 +444,6 @@ func (w *worker) writeMeta(item BulkIndexerItem) error {
 }
 
 // writeBody writes the item body to the buffer; it must be called under a lock.
-//
 func (w *worker) writeBody(item *BulkIndexerItem) error {
 	if item.Body != nil {
 
@@ -492,7 +475,6 @@ func (w *worker) writeBody(item *BulkIndexerItem) error {
 }
 
 // flush writes out the worker buffer; it must be called under a lock.
-//
 func (w *worker) flush(ctx context.Context) error {
 	if w.bi.config.OnFlushStart != nil {
 		ctx = w.bi.config.OnFlushStart(ctx)

@@ -15,14 +15,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
+//go:build ignore
 // +build ignore
 
 // This example demonstrates indexing documents using the esutil.BulkIndexer helper.
 //
 // You can configure the settings with command line flags:
 //
-//     go run indexer.go --workers=8 --count=100000 --flush=1000000
-//
+//	go run indexer.go --workers=8 --count=100000 --flush=1000000
 package main
 
 import (
@@ -41,9 +41,9 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/dustin/go-humanize"
 
-	"github.com/elastic/go-elasticsearch/v7"
-	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"github.com/elastic/go-elasticsearch/v7/esutil"
+	"github.com/michaelcheah/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7/esapi"
+	"github.com/michaelcheah/go-elasticsearch/v7/esutil"
 )
 
 type Article struct {

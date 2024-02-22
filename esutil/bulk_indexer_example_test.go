@@ -15,6 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+//go:build !integration
 // +build !integration
 
 package esutil_test
@@ -26,8 +27,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/v7"
-	"github.com/elastic/go-elasticsearch/v7/esutil"
+	"github.com/michaelcheah/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7/esutil"
 )
 
 func ExampleNewBulkIndexer() {
@@ -124,5 +125,5 @@ func ExampleNewBulkIndexer() {
 	//
 	// For more information, examples and benchmarks, see:
 	//
-	// --> https://github.com/elastic/go-elasticsearch/tree/master/_examples/bulk
+	// --> https://github.com/michaelcheah/go-elasticsearch/tree/master/_examples/bulk
 }

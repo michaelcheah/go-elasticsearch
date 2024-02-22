@@ -30,9 +30,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/v7"
-	"github.com/elastic/go-elasticsearch/v7/estransport"
-	"github.com/elastic/go-elasticsearch/v7/esutil"
+	"github.com/michaelcheah/go-elasticsearch/v7"
+	"github.com/michaelcheah/go-elasticsearch/v7/estransport"
+	"github.com/michaelcheah/go-elasticsearch/v7/esutil"
 )
 
 func TestBulkIndexerIntegration(t *testing.T) {

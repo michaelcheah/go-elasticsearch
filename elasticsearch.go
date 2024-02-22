@@ -34,9 +34,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"github.com/elastic/go-elasticsearch/v7/estransport"
-	"github.com/elastic/go-elasticsearch/v7/internal/version"
+	"github.com/michaelcheah/go-elasticsearch/v7/esapi"
+	"github.com/michaelcheah/go-elasticsearch/v7/estransport"
+	"github.com/michaelcheah/go-elasticsearch/v7/internal/version"
 )
 
 var (
